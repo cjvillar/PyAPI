@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import (
     QLineEdit,
     QPushButton,
     QLabel,
+    QSizePolicy,
 )
 
 
@@ -19,57 +20,93 @@ class URLStatusCodeChecker(QMainWindow):
 
     def initUI(self):
         self.setWindowTitle("URL Status Code Checker")
-        self.setGeometry(500, 500, 1000, 800) #(x,y ,width, height)
+        self.setGeometry(500, 500, 800, 800)
 
-        # Create a central widget and a layout for it
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
 
         layout = QVBoxLayout()
 
-        # Create a QLineEdit for entering the URL
         self.url_input = QLineEdit(self)
         self.url_input.setPlaceholderText("Enter URL")
+
+        # set the size policy for the input widget
+        self.url_input.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
+        )
+
+        # set the minimum and maximum sizes for the input widget
+        self.url_input.setMinimumSize(300, 30)
+        self.url_input.setMaximumSize(600, 40)
+
         layout.addWidget(self.url_input)
 
-        # Create a QPushButton to check the status code
         check_button = QPushButton("Check Status Code", self)
+
+        # set the size policy for the check button
+        check_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+
+        # set the minimum and maximum sizes for the check button
+        check_button.setMinimumSize(150, 40)
+        check_button.setMaximumSize(200, 50)
+
         layout.addWidget(check_button)
 
-        # Create a QLabel to display the status code
         self.status_label = QLabel(self)
         layout.addWidget(self.status_label)
 
+        # payload
+        self.payload_input = QLineEdit(self)
+        self.payload_input.setPlaceholderText("Enter Payload")
+        # set the size policy for the input widget
+        self.payload_input.setSizePolicy(
+            QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
+        )
+
+        self.payload_input.setMinimumSize(300, 300)
+        self.payload_input.setMaximumSize(600, 600)
+
+        layout.addWidget(self.payload_input)
+
+
+        clear_button = QPushButton("Clear Payload", self)
+
+        # set the size policy for the clear button
+        clear_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+
+        # set the minimum and maximum sizes for the clear button
+        clear_button.setMinimumSize(150, 40)
+        clear_button.setMaximumSize(200, 50)
+
+        layout.addWidget(clear_button)
+
         central_widget.setLayout(layout)
 
-        # Connect the button click event to the function for checking the status code
         check_button.clicked.connect(self.check_status_code)
+        clear_button.clicked.connect(self.clear_status)
 
     def check_status_code(self):
-        # Get the URL from the input field
         url = self.url_input.text()
 
         try:
-            # Send a GET request to the URL
             response = requests.get(url)
-
-            # Update the status label with the status code
             self.status_label.setText(f"Status Code: {response.status_code}")
 
-            # Set the text color for easy status code
             if response.status_code <= 200:
                 self.status_label.setStyleSheet("color: green;")
-
             elif response.status_code > 202:
                 self.status_label.setStyleSheet("color: red;")
-
             else:
-                self.status_label.setStyleSheet("")  # Reset the style
+                self.status_label.setStyleSheet("")
 
         except Exception as e:
-            # Handle any exceptions, e.g., network errors or invalid URLs
             self.status_label.setText(f"Error: {str(e)}")
-            self.status_label.setStyleSheet("color: red;")  # Set text color to red
+            self.status_label.setStyleSheet("color: red;")
+
+    # define a method to clear the status label
+    def clear_status(self):
+        self.status_label.clear()
+        self.payload_input.clear()
 
 
 def main():
