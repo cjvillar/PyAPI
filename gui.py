@@ -9,6 +9,7 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QLabel,
     QSizePolicy,
+    QCheckBox,
 )
 
 
@@ -41,6 +42,10 @@ class URLStatusCodeChecker(QMainWindow):
 
         layout.addWidget(self.url_input)
 
+        # create a checkbox for fetch data
+        self.fetch_data_checkbox = QCheckBox("Fetch Data", self)
+        layout.addWidget(self.fetch_data_checkbox)
+
         check_button = QPushButton("Check Status Code", self)
 
         # set the size policy for the check button
@@ -57,7 +62,7 @@ class URLStatusCodeChecker(QMainWindow):
 
         # payload
         self.payload_input = QLineEdit(self)
-        self.payload_input.setPlaceholderText("Enter Payload")
+        self.payload_input.setPlaceholderText("")
         # set the size policy for the input widget
         self.payload_input.setSizePolicy(
             QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Fixed
@@ -68,8 +73,7 @@ class URLStatusCodeChecker(QMainWindow):
 
         layout.addWidget(self.payload_input)
 
-
-        clear_button = QPushButton("Clear Payload", self)
+        clear_button = QPushButton("Clear", self)
 
         # set the size policy for the clear button
         clear_button.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
@@ -83,6 +87,7 @@ class URLStatusCodeChecker(QMainWindow):
         central_widget.setLayout(layout)
 
         check_button.clicked.connect(self.check_status_code)
+        self.fetch_data_checkbox.stateChanged.connect(self.display_fetched_data)
         clear_button.clicked.connect(self.clear_status)
 
     def check_status_code(self):
@@ -107,6 +112,36 @@ class URLStatusCodeChecker(QMainWindow):
     def clear_status(self):
         self.status_label.clear()
         self.payload_input.clear()
+
+    def display_fetched_data(self, state):
+        if state == 2:  # 2 corresponds to checked state
+            data = self.fetch_data()
+            if data:
+                # display the fetched data in a label or any other widget
+                self.status_label.setText(f"Fetched Data: {data}")
+            elif data == None:
+                self.status_label.setText("Failed to fetch data.")
+        else:
+            # Clear the label when the checkbox is unchecked
+            self.status_label.clear()
+
+    def fetch_data(self):
+        url = self.url_input.text()
+        try:
+            response = requests.get(url)
+            # check if the request was successful (status code 200)
+            if response.status_code == 200:
+                # parse the JSON response
+                data = response.json()
+
+                return data
+            else:
+                # if the request was not successful, raise an exception or handle the error accordingly
+                response.raise_for_status()
+        except requests.exceptions.RequestException as e:
+            # handle any request exceptions
+            print(f"An error occurred: {e}")
+            return None
 
 
 def main():
