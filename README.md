@@ -1,22 +1,14 @@
 # PyAPI
 
+I love making interactive things but Python was never my go-to for good-looking user interfaces. Python has a built-in GUI library, Tkinter. However, I found it to be a little outdated looking and somewhat difficult to use. With the urge to create I found PyQt6. This repo contains my learning project PyAPI. It's not meant to be a production app but more as an evolving project to learn PyQt6 in my spare time.
 
-<img src="/Users/chrisv/pyAPI/assets/gui_screenshot.png" alt="Gui Screenshot" width="200" height="150">
-
+<img src="https://github.com/cjvillar/PyAPI/blob/main/assets/gui_screenshot.png" alt="Gui Screenshot" width="550" height="400">
 
 Using https://pypi.org/project/PyQt6/
-
-- build a GUI that accesses urls and returns status codes.
-
-
-'''
-I love making interactive things but python was never my go to for User interfaces. Python has a built in GUI libray, Tkinter, however I found it to be a little outfdated looking and somewhat difficuly to use. With the urge to create I found PyQt6. 
-
-'''
+- build a GUI that accesses URLs and returns status codes/data.
 
 ### Resources
 You can use this Dog API to play with the tool.
-https://dog.ceo/dog-api/
-
-https://dog.ceo/api/breeds/image/random
+- https://dog.ceo/dog-api/
+- https://dog.ceo/api/breeds/image/random
 
