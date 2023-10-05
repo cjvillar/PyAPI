@@ -8,3 +8,8 @@ Using https://pypi.org/project/PyQt6/
 I love making interactive things but python was never my go to for User interfaces. Python has a built in GUI libray, Tkinter, however I found it to be a little outfdated looking and somewhat difficuly to use. With the urge to create I found PyQt6. 
 
 '''
+
+### Resources
+
+https://dog.ceo/dog-api/
+
